@@ -56,31 +56,9 @@ public class CustomerController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam("file") MultipartFile file) {
-        System.out.println("asda");
-        if (file.isEmpty()) {
-            return "No file selected";
-        }
-        try {
-            byte[] bytes = file.getBytes();
-
-            String filePath = "static/pictures" + file.getOriginalFilename();
-            File serverFile = new File(filePath);
-
-            FileUtils.writeByteArrayToFile(serverFile, bytes);
-
-            return "File uploaded successfully";
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error uploading file";
-        }
+    @PostMapping("upload/{id}")
+    public String uploadImage(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
+        return customerService.uploadPicture(file, id);
     }
 
-    @GetMapping("/images/{imageName}")
-    public Resource getImage(@PathVariable String imageName) {
-        String imagePath = "static//1.jpg" ;
-        File imageFile = new File(imagePath);
-        return new FileSystemResource(imageFile);
-    }
 }

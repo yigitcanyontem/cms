@@ -7,8 +7,20 @@ import com.saritay.cms.dto.CustomerUpdateForm;
 import com.saritay.cms.entity.Customer;
 import com.saritay.cms.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,4 +70,24 @@ public class CustomerService {
         }
         customerRepository.save(customer);
     }
+
+    public String uploadPicture(MultipartFile file, Integer id){
+        if (file.isEmpty()) {
+            return "No file selected";
+        }
+        try {
+            byte[] bytes = file.getBytes();
+
+            String filePath = "static/"+id+".jpg";
+            File serverFile = new File(filePath);
+
+            FileUtils.writeByteArrayToFile(serverFile, bytes);
+
+            return "File uploaded successfully";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error uploading file";
+        }
+    }
+
 }

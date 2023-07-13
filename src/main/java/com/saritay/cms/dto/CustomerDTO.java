@@ -7,6 +7,7 @@ public class CustomerDTO {
     private String email;
     private String telNo;
     private Gender gender;
+    private String profilePic;
 
     public CustomerDTO(Integer id, String firstName, String lastName, String email, String telNo, Gender gender) {
         this.id = id;
@@ -16,13 +17,22 @@ public class CustomerDTO {
         this.telNo = telNo;
         this.gender = gender;
     }
-
-    public CustomerDTO(String firstName, String lastName, String email, String telNo, Gender gender) {
+    public CustomerDTO(Integer id, String firstName, String lastName, String email, String telNo, Gender gender,String profilePic) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.telNo = telNo;
         this.gender = gender;
+        this.profilePic = profilePic;
+    }
+    public CustomerDTO(String firstName, String lastName, String email, String telNo, Gender gender,String profilePic) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telNo = telNo;
+        this.gender = gender;
+        this.profilePic = profilePic;
     }
 
     public Integer getId() {
@@ -71,5 +81,13 @@ public class CustomerDTO {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 }
