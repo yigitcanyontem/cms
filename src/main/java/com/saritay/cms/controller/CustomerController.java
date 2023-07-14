@@ -62,7 +62,7 @@ public class CustomerController {
     }
 
     @PostMapping("login")
-    public Role uploadImage(@RequestBody CustomerLoginForm form) {
+    public LoginReturnDTO uploadImage(@RequestBody CustomerLoginForm form) {
         return customerService.login(form);
     }
 

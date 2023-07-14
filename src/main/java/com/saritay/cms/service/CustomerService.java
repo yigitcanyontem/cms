@@ -85,10 +85,13 @@ public class CustomerService {
         }
     }
 
-    public Role login(CustomerLoginForm form) {
+    public LoginReturnDTO login(CustomerLoginForm form) {
         Customer customer = customerRepository.findCustomerByEmail(form.email());
         if (customer.getPassword().equals(form.password()) && customer.getIsActive().equals(Active.ACTIVE)){
-            return customer.getRole();
+            return new LoginReturnDTO(
+                    customer.getId(),
+                    customer.getRole()
+            );
         }else {
             throw new RuntimeException();
         }
