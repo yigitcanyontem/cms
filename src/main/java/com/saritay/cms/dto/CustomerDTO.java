@@ -1,5 +1,7 @@
 package com.saritay.cms.dto;
 
+import org.springframework.core.io.Resource;
+
 public class CustomerDTO {
     private Integer id;
     private String firstName;
@@ -7,7 +9,7 @@ public class CustomerDTO {
     private String email;
     private String telNo;
     private Gender gender;
-    private String profilePic;
+    private Resource profilePic;
 
     public CustomerDTO(Integer id, String firstName, String lastName, String email, String telNo, Gender gender) {
         this.id = id;
@@ -17,7 +19,7 @@ public class CustomerDTO {
         this.telNo = telNo;
         this.gender = gender;
     }
-    public CustomerDTO(Integer id, String firstName, String lastName, String email, String telNo, Gender gender,String profilePic) {
+    public CustomerDTO(Integer id, String firstName, String lastName, String email, String telNo, Gender gender,Resource profilePic) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,7 +28,7 @@ public class CustomerDTO {
         this.gender = gender;
         this.profilePic = profilePic;
     }
-    public CustomerDTO(String firstName, String lastName, String email, String telNo, Gender gender,String profilePic) {
+    public CustomerDTO(String firstName, String lastName, String email, String telNo, Gender gender,Resource profilePic) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -81,13 +83,5 @@ public class CustomerDTO {
 
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
     }
 }

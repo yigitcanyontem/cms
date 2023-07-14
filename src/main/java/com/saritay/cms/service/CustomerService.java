@@ -1,15 +1,10 @@
 package com.saritay.cms.service;
 
-import com.saritay.cms.dto.Active;
-import com.saritay.cms.dto.CustomerDTO;
-import com.saritay.cms.dto.CustomerRegistrationForm;
-import com.saritay.cms.dto.CustomerUpdateForm;
+import com.saritay.cms.dto.*;
 import com.saritay.cms.entity.Customer;
 import com.saritay.cms.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -18,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -31,11 +25,11 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
 
     public List<Customer> getCustomers(){
-        return customerRepository.findAllByIsActiveNot(Active.INACTIVE);
+        return customerRepository.findAllByIsActiveNotAndRoleNot(Active.INACTIVE, Role.ADMIN);
     }
 
     public Optional<Customer> getCustomer(Integer id){
-        return customerRepository.findCustomerByIdAndIsActiveNot(id, Active.INACTIVE);
+        return customerRepository.findCustomerByIdAndIsActiveNotAndRoleNot(id, Active.INACTIVE, Role.ADMIN);
     }
     public void createCustomer(CustomerRegistrationForm form){
          Customer customer = new Customer(
@@ -45,6 +39,7 @@ public class CustomerService {
                  form.telNo(),
                  form.password(),
                  form.gender(),
+                 Role.CUSTOMER,
                  Active.ACTIVE
          );
          customerRepository.save(customer);
@@ -78,7 +73,7 @@ public class CustomerService {
         try {
             byte[] bytes = file.getBytes();
 
-            String filePath = "static/"+id+".jpg";
+            String filePath = "photos/" + id+".jpg";
             File serverFile = new File(filePath);
 
             FileUtils.writeByteArrayToFile(serverFile, bytes);
@@ -90,4 +85,12 @@ public class CustomerService {
         }
     }
 
+    public Role login(CustomerLoginForm form) {
+        Customer customer = customerRepository.findCustomerByEmail(form.email());
+        if (customer.getPassword().equals(form.password()) && customer.getIsActive().equals(Active.ACTIVE)){
+            return customer.getRole();
+        }else {
+            throw new RuntimeException();
+        }
+    }
 }

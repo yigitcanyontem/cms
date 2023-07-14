@@ -2,6 +2,7 @@ package com.saritay.cms.entity;
 
 import com.saritay.cms.dto.Active;
 import com.saritay.cms.dto.Gender;
+import com.saritay.cms.dto.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -74,23 +75,31 @@ public class Customer {
             nullable = false
     )
     @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(
+            nullable = false
+    )
+    @Enumerated(EnumType.STRING)
     private Active isActive;
 
-    public Customer(String firstName, String lastName, String email, String telNo, String password, Gender gender) {
+    public Customer(String firstName, String lastName, String email, String telNo, String password, Gender gender,Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.telNo = telNo;
         this.password = password;
         this.gender = gender;
+        this.role = role;
     }
-    public Customer(String firstName, String lastName, String email, String telNo, String password, Gender gender, Active isActive) {
+    public Customer(String firstName, String lastName, String email, String telNo, String password, Gender gender,Role role, Active isActive) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.telNo = telNo;
         this.password = password;
         this.gender = gender;
+        this.role = role;
         this.isActive = isActive;
     }
     public Integer getId() {
@@ -155,5 +164,12 @@ public class Customer {
 
     public void setIsActive(Active isActive) {
         this.isActive = isActive;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

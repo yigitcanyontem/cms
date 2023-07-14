@@ -1,12 +1,12 @@
 package com.saritay.cms.controller;
 
-import com.saritay.cms.dto.CustomerDTO;
-import com.saritay.cms.dto.CustomerRegistrationForm;
-import com.saritay.cms.dto.CustomerUpdateForm;
+import com.saritay.cms.dto.*;
 import com.saritay.cms.mapper.CustomerDTOMapper;
 import com.saritay.cms.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,4 +61,23 @@ public class CustomerController {
         return customerService.uploadPicture(file, id);
     }
 
+    @PostMapping("login")
+    public Role uploadImage(@RequestBody CustomerLoginForm form) {
+        return customerService.login(form);
+    }
+
+    @GetMapping("/images/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+        String imagePath = "photos/" + imageName + ".jpg";
+        File imageFile = new File(imagePath);
+        Resource resource = new FileSystemResource(imageFile);
+
+        if (resource.exists()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return ResponseEntity.ok().headers(headers).body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
